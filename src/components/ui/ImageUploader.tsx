@@ -10,15 +10,62 @@ interface ImageUploaderProps {
   error?: string;
 }
 
+function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<File> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      let { width, height } = img;
+      // Redimensionar si supera el máximo
+      if (width > maxWidth || height > maxWidth) {
+        if (width > height) {
+          height = Math.round(height * (maxWidth / width));
+          width = maxWidth;
+        } else {
+          width = Math.round(width * (maxWidth / height));
+          height = maxWidth;
+        }
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        resolve(file);
+        return;
+      }
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const name = file.name.replace(/\.[^.]+$/, ".jpg");
+            const optimized = new File([blob], name, { type: "image/jpeg" });
+            resolve(optimized);
+          } else {
+            resolve(file);
+          }
+        },
+        "image/jpeg",
+        quality
+      );
+    };
+    img.onerror = () => resolve(file);
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleUpload = async (file: File) => {
+  const handleUpload = async (rawFile: File) => {
     setUploading(true);
     try {
+      // Comprimir la imagen antes de subir
+      const compressed = await compressImage(rawFile);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressed);
       const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
@@ -69,7 +116,8 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
         <input
           ref={fileRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept="image/*"
+          capture="environment"
           onChange={handleFileChange}
           className="hidden"
         />
@@ -82,7 +130,8 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
       <input
         ref={fileRef}
         type="file"
-        accept="image/jpeg,image/png,image-webp"
+        accept="image/*"
+        capture="environment"
         onChange={handleFileChange}
         className="hidden"
       />
@@ -98,10 +147,10 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
       >
         <Upload className="size-10 text-lila-500 mx-auto mb-3" />
         <p className="text-body text-gray-700 font-medium">
-          {uploading ? "Subiendo..." : "Toca para subir una imagen"}
+          {uploading ? "Subiendo..." : "Toca para subir o hacer foto"}
         </p>
         <p className="text-caption text-gray-500 mt-1">
-          JPG, PNG o WebP. Máx 5MB.
+          Se optimiza automáticamente (máx 1200px). Desde móvil puedes hacer foto con la cámara 📸
         </p>
       </button>
       {error && <p className="mt-1.5 text-body-sm text-danger-500">{error}</p>}
