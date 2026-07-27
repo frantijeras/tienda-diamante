@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CartIcon } from "./CartIcon";
 
 export function Header() {
@@ -6,8 +7,14 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-lila-100 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-10 h-10 bg-lila-500 rounded-xl flex items-center justify-center text-white font-bold text-lg font-display">
-            💎
+          <div className="w-10 h-10 relative">
+            <Image
+              src="/images/logo.png"
+              alt="La Tienda Diamante de Paula"
+              fill
+              className="object-contain"
+              sizes="40px"
+            />
           </div>
           <span className="text-h4 font-display font-semibold text-gray-900 hidden sm:block">
             La Tienda Diamante de Paula
