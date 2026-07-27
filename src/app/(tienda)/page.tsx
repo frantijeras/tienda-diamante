@@ -16,7 +16,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-lila-100 via-white to-lila-50 py-12 md:py-20">
         <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 text-center">
-          <div className="w-28 h-28 md:w-36 md:h-36 mx-auto mb-4 relative">
+          <div className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-6 relative">
             <Image
               src="/images/logo.png"
               alt="La Tienda Diamante de Paula"
