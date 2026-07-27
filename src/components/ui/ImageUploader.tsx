@@ -86,7 +86,6 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
         ref={fileRef}
         type="file"
         accept="image/*"
-        capture="environment"
         onChange={handleFileChange}
         className="hidden"
       />
