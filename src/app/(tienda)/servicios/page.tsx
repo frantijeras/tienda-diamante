@@ -52,7 +52,7 @@ export default async function ServiciosPage({
 
       {/* Services grid */}
       {servicios.length > 0 ? (
-        <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 animate-stagger">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 animate-stagger">
           {servicios.map((s) => (
             <ServiceCard
               key={s.id}

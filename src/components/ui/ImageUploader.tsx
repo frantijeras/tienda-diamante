@@ -10,61 +10,15 @@ interface ImageUploaderProps {
   error?: string;
 }
 
-function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<Blob | null> {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      URL.revokeObjectURL(img.src);
-      let { width, height } = img;
-      if (width > maxWidth || height > maxWidth) {
-        if (width > height) {
-          height = Math.round(height * (maxWidth / width));
-          width = maxWidth;
-        } else {
-          width = Math.round(width * (maxWidth / height));
-          height = maxWidth;
-        }
-      }
-
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        resolve(null);
-        return;
-      }
-      ctx.drawImage(img, 0, 0, width, height);
-
-      canvas.toBlob(
-        (blob) => resolve(blob),
-        "image/jpeg",
-        quality
-      );
-    };
-    img.onerror = () => { URL.revokeObjectURL(img.src); resolve(null); };
-    img.src = URL.createObjectURL(file);
-  });
-}
-
 export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleUpload = async (rawFile: File) => {
+  const handleUpload = async (file: File) => {
     setUploading(true);
     try {
-      // Comprimir la imagen antes de subir
-      const compressed = await compressImage(rawFile);
       const formData = new FormData();
-      if (compressed) {
-        // Enviar blob comprimido como JPEG
-        const filename = rawFile.name.replace(/\.[^.]+$/, ".jpg");
-        formData.append("file", compressed, filename);
-      } else {
-        // Fallback: enviar original
-        formData.append("file", rawFile);
-      }
+      formData.append("file", file);
       const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
@@ -149,7 +103,7 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
           {uploading ? "Subiendo..." : "Toca para subir o hacer foto"}
         </p>
         <p className="text-caption text-gray-500 mt-1">
-          Se optimiza automáticamente (máx 1200px). Desde móvil puedes hacer foto con la cámara 📸
+          Desde móvil puedes hacer foto con la cámara 📸
         </p>
       </button>
       {error && <p className="mt-1.5 text-body-sm text-danger-500">{error}</p>}

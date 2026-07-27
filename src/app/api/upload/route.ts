@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { UPLOAD_MAX_SIZE, UPLOAD_ALLOWED_TYPES } from "@/lib/constants";
+import { UPLOAD_MAX_SIZE } from "@/lib/constants";
+import sharp from "sharp";
 import path from "path";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
@@ -29,23 +30,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!UPLOAD_ALLOWED_TYPES.includes(file.type)) {
-      return NextResponse.json(
-        { error: "Formato no soportado. Usar jpg, png o webp" },
-        { status: 415 }
-      );
-    }
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-    const ext = file.name.split(".").pop() || "jpg";
-    const filename = `${uuidv4()}.${ext}`;
+    // Redimensionar y comprimir con sharp
+    const optimized = await sharp(buffer)
+      .resize(1200, 1200, { fit: "inside", withoutEnlargement: true })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+
+    const filename = `${uuidv4()}.jpg`;
     const uploadDir = path.join(process.cwd(), "public", "uploads", "productos");
 
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    fs.writeFileSync(path.join(uploadDir, filename), buffer);
+    fs.writeFileSync(path.join(uploadDir, filename), optimized);
 
     return NextResponse.json(
       { url: `/uploads/productos/${filename}` },
