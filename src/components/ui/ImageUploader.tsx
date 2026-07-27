@@ -27,11 +27,12 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
         const data = await res.json();
         onChange(data.url);
       } else {
-        const data = await res.json();
-        alert(data.error || "Error subiendo imagen");
+        const data = await res.json().catch(() => ({ error: `Error del servidor (${res.status})` }));
+        alert(`Error: ${data.error}`);
       }
-    } catch {
-      alert("Error subiendo imagen");
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Error desconocido";
+      alert(`Error de red: ${msg}`);
     } finally {
       setUploading(false);
     }
