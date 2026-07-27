@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
 
 interface SelectOption {
   value: string;
@@ -63,7 +62,7 @@ export function Select({
             </option>
           ))}
         </select>
-        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-gray-400 pointer-events-none" />
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</span>
       </div>
       {error && <p className="mt-1.5 text-body-sm text-danger-500">{error}</p>}
     </div>

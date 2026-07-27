@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { CheckCircle2, AlertCircle, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface ToastProps {
@@ -41,11 +40,7 @@ export function Toast({
           : "bg-danger-50 text-danger-700 border border-danger-200"
       )}
     >
-      {variant === "success" ? (
-        <CheckCircle2 className="size-5 flex-shrink-0" />
-      ) : (
-        <AlertCircle className="size-5 flex-shrink-0" />
-      )}
+      <span className="flex-shrink-0">{variant === "success" ? "✅" : "⚠️"}</span>
       <p className="text-body font-medium">{message}</p>
       <button
         onClick={() => {
@@ -54,7 +49,7 @@ export function Toast({
         }}
         className="ml-2 p-0.5 hover:opacity-70 transition-opacity"
       >
-        <X className="size-4" />
+        ❌
       </button>
     </div>
   );

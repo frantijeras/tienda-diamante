@@ -1,9 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import type { LucideIcon } from "lucide-react";
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -12,8 +10,6 @@ interface ButtonProps {
   fullWidth?: boolean;
   disabled?: boolean;
   loading?: boolean;
-  leftIcon?: LucideIcon | React.ReactNode;
-  rightIcon?: LucideIcon | React.ReactNode;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   href?: string;
@@ -37,12 +33,6 @@ const sizeStyles = {
   xl: "px-6 py-3.5 text-h4 min-h-[56px]",
 };
 
-function isLucideIcon(
-  icon: LucideIcon | React.ReactNode
-): icon is LucideIcon {
-  return typeof icon === "function";
-}
-
 export function Button({
   children,
   variant = "primary",
@@ -50,8 +40,6 @@ export function Button({
   fullWidth = false,
   disabled = false,
   loading = false,
-  leftIcon: LeftIcon,
-  rightIcon: RightIcon,
   onClick,
   type = "button",
   href,
@@ -71,24 +59,10 @@ export function Button({
     className
   );
 
-  const renderLeftIcon = () => {
-    if (loading) return <Loader2 className="size-5 animate-spin" />;
-    if (!LeftIcon) return null;
-    if (isLucideIcon(LeftIcon)) return <LeftIcon className="size-5" />;
-    return LeftIcon;
-  };
-
-  const renderRightIcon = () => {
-    if (loading || !RightIcon) return null;
-    if (isLucideIcon(RightIcon)) return <RightIcon className="size-5" />;
-    return RightIcon;
-  };
-
   const content = (
     <>
-      {renderLeftIcon()}
+      {loading && <span className="animate-spin">⏳</span>}
       {children}
-      {renderRightIcon()}
     </>
   );
 

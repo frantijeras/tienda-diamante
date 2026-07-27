@@ -1,7 +1,6 @@
 import { getEncargoById } from "@/lib/orders";
 import { formatCurrency, formatDate, getOrderNumber } from "@/lib/utils";
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
 
 export default async function ConfirmacionPage({
   searchParams,
@@ -123,8 +122,7 @@ export default async function ConfirmacionPage({
           href="/"
           className="inline-flex items-center justify-center gap-2 bg-white text-lila-700 border-2 border-lila-200 hover:border-lila-400 hover:bg-lila-50 px-6 py-3.5 rounded-xl font-semibold transition-colors"
         >
-          <ShoppingBag className="size-5" />
-          Volver a la tienda
+          🛍️ Volver a la tienda
         </Link>
       </div>
     </div>

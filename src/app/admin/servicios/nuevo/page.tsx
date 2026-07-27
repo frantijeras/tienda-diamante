@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Select } from "@/components/ui/Select";
 import { ImageUploader } from "@/components/ui/ImageUploader";
 import { CATEGORIAS_SERVICIOS } from "@/lib/constants";
-import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 export default function NuevoServicioPage() {
@@ -67,8 +66,7 @@ export default function NuevoServicioPage() {
         href="/admin/servicios"
         className="inline-flex items-center gap-1 text-body-sm text-lila-600 hover:text-lila-700 transition-colors mb-4"
       >
-        <ChevronLeft className="size-4" />
-        Volver a servicios
+        ← Volver a servicios
       </Link>
 
       <h1 className="text-h2 font-display font-semibold text-gray-900 mb-6">

@@ -1,7 +1,7 @@
 import { db, schema } from "./db";
 import { eq, desc, asc } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
-import { devolverStock } from "./products";
+import { descontarStock, devolverStock } from "./products";
 
 export interface CreateEncargoInput {
   clienteNombre: string;
@@ -90,12 +90,50 @@ export function createEncargo(input: CreateEncargoInput) {
   return getEncargoById(id);
 }
 
+function descontarStockEncargo(encargoId: string): void {
+  const encargo = getEncargoById(encargoId);
+  if (!encargo) return;
+
+  for (const item of encargo.items) {
+    if (item.itemType === "producto") {
+      descontarStock(item.itemId, item.cantidad);
+    }
+  }
+}
+
+function devolverStockEncargo(encargoId: string): void {
+  const encargo = getEncargoById(encargoId);
+  if (!encargo) return;
+
+  for (const item of encargo.items) {
+    if (item.itemType === "producto") {
+      devolverStock(item.itemId, item.cantidad);
+    }
+  }
+}
+
 export function updateEncargoEstado(id: string, estado: string) {
+  const encargo = getEncargoById(id);
+  if (!encargo) return null;
+
+  const estadoAnterior = encargo.estado;
   const now = new Date().toISOString();
+
   db.update(schema.encargos)
     .set({ estado, updatedAt: now })
     .where(eq(schema.encargos.id, id))
     .run();
+
+  // Descontar stock solo al pasar a "completado" (y no estaba ya completado)
+  if (estado === "completado" && estadoAnterior !== "completado") {
+    descontarStockEncargo(id);
+  }
+
+  // Devolver stock si se desmarca de "completado" a otro estado
+  if (estadoAnterior === "completado" && estado !== "completado") {
+    devolverStockEncargo(id);
+  }
+
   return getEncargoById(id);
 }
 
@@ -130,11 +168,9 @@ export function cancelarEncargo(id: string) {
     .where(eq(schema.encargos.id, id))
     .run();
 
-  // Devolver stock de productos
-  for (const item of encargo.items) {
-    if (item.itemType === "producto") {
-      devolverStock(item.itemId, item.cantidad);
-    }
+  // Devolver stock solo si estaba completado (el stock fue descontado)
+  if (encargo.estado === "completado") {
+    devolverStockEncargo(id);
   }
 
   return getEncargoById(id);

@@ -8,16 +8,16 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Select } from "@/components/ui/Select";
 import { ImageUploader } from "@/components/ui/ImageUploader";
 import { CATEGORIAS_PRODUCTOS } from "@/lib/constants";
-import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { Spinner } from "@/components/ui/Spinner";
 
 export default function EditarProductoPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
   const router = useRouter();
+  const productoId = params.id;
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState("");
@@ -27,26 +27,22 @@ export default function EditarProductoPage({
   const [categoria, setCategoria] = useState<string>(CATEGORIAS_PRODUCTOS[0].id);
   const [imagenUrl, setImagenUrl] = useState("");
   const [stock, setStock] = useState("0");
-  const [productoId, setProductoId] = useState("");
 
   useEffect(() => {
-    params.then(({ id }) => {
-      setProductoId(id);
-      fetch(`/api/productos/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.data) {
-            setNombre(data.data.nombre);
-            setDescripcion(data.data.descripcion || "");
-            setPrecio(data.data.precio.toString());
-            setCategoria(data.data.categoria);
-            setImagenUrl(data.data.imagenUrl || "");
-            setStock((data.data.stock ?? 0).toString());
-          }
-        })
-        .finally(() => setFetching(false));
-    });
-  }, [params]);
+    fetch(`/api/productos/${productoId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.data) {
+          setNombre(data.data.nombre);
+          setDescripcion(data.data.descripcion || "");
+          setPrecio(data.data.precio.toString());
+          setCategoria(data.data.categoria);
+          setImagenUrl(data.data.imagenUrl || "");
+          setStock((data.data.stock ?? 0).toString());
+        }
+      })
+      .finally(() => setFetching(false));
+  }, [productoId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,8 +93,7 @@ export default function EditarProductoPage({
         href="/admin/productos"
         className="inline-flex items-center gap-1 text-body-sm text-lila-600 hover:text-lila-700 transition-colors mb-4"
       >
-        <ChevronLeft className="size-4" />
-        Volver a productos
+        ← Volver a productos
       </Link>
 
       <h1 className="text-h2 font-display font-semibold text-gray-900 mb-6">

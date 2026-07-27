@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Upload, X } from "lucide-react";
 import React, { useRef, useState } from "react";
 
 interface ImageUploaderProps {
@@ -56,7 +55,7 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
             onClick={() => onChange("")}
             className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors"
           >
-            <X className="size-4 text-gray-600" />
+            ❌
           </button>
         </div>
         <button
@@ -96,7 +95,7 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
           uploading && "opacity-50 cursor-wait"
         )}
       >
-        <Upload className="size-10 text-lila-500 mx-auto mb-3" />
+        <span className="text-4xl block mb-3">📤</span>
         <p className="text-body text-gray-700 font-medium">
           {uploading ? "Subiendo..." : "Toca para subir una imagen"}
         </p>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -67,7 +66,7 @@ export function ConfirmOrderModal({
     <Modal open={open} onClose={onClose}>
       <div className="text-center mb-4">
         <div className="w-16 h-16 mx-auto mb-3 bg-lila-100 rounded-full flex items-center justify-center">
-          <Sparkles className="size-8 text-lila-500" />
+          <span className="text-3xl">✨</span>
         </div>
         <h3 className="text-h2 font-display font-semibold text-gray-900">
           ¡Casi listo!

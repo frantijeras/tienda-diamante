@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Toast";
 import Link from "next/link";
@@ -64,7 +63,7 @@ export function ServicioReservarButton({
           Fecha de la reserva
         </label>
         <div className="relative">
-          <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-lila-500 pointer-events-none" />
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lila-500 pointer-events-none">📅</span>
           <input
             type="date"
             min={minDate}
@@ -87,7 +86,7 @@ export function ServicioReservarButton({
           loading={loading}
           disabled={!fecha}
           onClick={handleReservar}
->
+        >
           {added
             ? "¡Reservado! ✓"
             : fecha

@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
-import { Clock, Loader2, CheckCircle2 } from "lucide-react";
 
 interface StatCardProps {
   label: string;
@@ -9,10 +8,10 @@ interface StatCardProps {
   variant: "pendiente" | "en_proceso" | "completado";
 }
 
-const iconMap = {
-  pendiente: Clock,
-  en_proceso: Loader2,
-  completado: CheckCircle2,
+const emojiMap = {
+  pendiente: "⏰",
+  en_proceso: "🔄",
+  completado: "✅",
 };
 
 const bgMap = {
@@ -21,15 +20,7 @@ const bgMap = {
   completado: "bg-success-100",
 };
 
-const colorMap = {
-  pendiente: "text-warning-600",
-  en_proceso: "text-info-600",
-  completado: "text-success-600",
-};
-
 export function StatCard({ label, value, description, variant }: StatCardProps) {
-  const Icon = iconMap[variant];
-
   return (
     <Card>
       <div className="flex items-start justify-between">
@@ -44,11 +35,11 @@ export function StatCard({ label, value, description, variant }: StatCardProps) 
         </div>
         <div
           className={cn(
-            "w-12 h-12 rounded-xl flex items-center justify-center",
+            "w-12 h-12 rounded-xl flex items-center justify-center text-2xl",
             bgMap[variant]
           )}
         >
-          <Icon className={cn("size-6", colorMap[variant])} />
+          {emojiMap[variant]}
         </div>
       </div>
     </Card>
