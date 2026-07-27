@@ -87,11 +87,12 @@ export function ServicioReservarButton({
           loading={loading}
           disabled={!fecha}
           onClick={handleReservar}
+          leftIcon={<Calendar className="size-6" />}
 >
           {added
             ? "¡Reservado! ✓"
             : fecha
-            ? `📅 Reservar para ${formatDate(fecha)}`
+            ? `Reservar para ${formatDate(fecha)}`
             : "Elige una fecha para continuar"}
         </Button>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ShoppingCart, Check } from "lucide-react";
+import { ShoppingCart, Check, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import { Toast } from "@/components/ui/Toast";
@@ -85,7 +85,7 @@ export function AddToCartButton({
             fullWidth
             disabled
           >
-            ❌ Agotado
+            Agotado
           </Button>
         ) : (
           <Button
@@ -94,13 +94,19 @@ export function AddToCartButton({
             fullWidth
             loading={loading}
             onClick={handleAdd}
-            leftIcon={added ? <Check className="size-6" /> : <ShoppingCart className="size-6" />}
+            leftIcon={
+              added
+                ? <Check className="size-6" />
+                : itemType === "servicio"
+                ? <Calendar className="size-6" />
+                : <ShoppingCart className="size-6" />
+            }
           >
             {added
-              ? "✅ ¡Añadido!"
+              ? "¡Añadido!"
               : itemType === "servicio"
-              ? "📅 Reservar"
-              : "🛒 Añadir al carrito"}
+              ? "Reservar"
+              : "Añadir al carrito"}
           </Button>
         )}
       </div>
