@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServicioById, updateServicio, archiveServicio, unarchiveServicio } from "@/lib/services";
+import { getServicioById, updateServicio, archiveServicio, unarchiveServicio, deleteServicio } from "@/lib/services";
 import { isAuthenticated } from "@/lib/auth";
 
 export async function GET(
@@ -54,7 +54,7 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
+export async function PATCH(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -84,6 +84,37 @@ export async function DELETE(
   } catch {
     return NextResponse.json(
       { error: "Error al archivar servicio" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const auth = await isAuthenticated();
+    if (!auth) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+
+    const { id } = await params;
+    const servicio = getServicioById(id);
+
+    if (!servicio) {
+      return NextResponse.json(
+        { error: "Servicio no encontrado" },
+        { status: 404 }
+      );
+    }
+
+    deleteServicio(id);
+
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json(
+      { error: "Error al eliminar servicio" },
       { status: 500 }
     );
   }

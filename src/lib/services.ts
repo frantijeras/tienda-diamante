@@ -92,3 +92,9 @@ export function archiveServicio(id: string) {
 export function unarchiveServicio(id: string) {
   return updateServicio(id, { activo: true });
 }
+
+export function deleteServicio(id: string) {
+  db.delete(schema.servicios)
+    .where(eq(schema.servicios.id, id))
+    .run();
+}
