@@ -48,7 +48,7 @@ export function ProductCard({
             {formatCurrency(precio)}
           </span>
           <div className="flex flex-col items-end gap-1">
-            {stock !== undefined && stock <= 5 && (
+            {stock !== undefined && stock !== -1 && stock <= 5 && (
               <span className={`text-body-xs font-semibold ${stock === 0 ? "text-danger-500" : "text-warning-500"}`}>
                 {stock === 0 ? "❌ Agotado" : `⚠️ Quedan ${stock}`}
               </span>

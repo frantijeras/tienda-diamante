@@ -65,7 +65,7 @@ export default async function ProductoDetallePage({
             {formatCurrency(producto.precio)}
           </p>
 
-          {producto.stock !== undefined && (
+          {producto.stock !== undefined && producto.stock !== -1 && (
             <p className={`text-body-sm font-semibold mb-6 ${producto.stock === 0 ? "text-danger-500" : producto.stock <= 5 ? "text-warning-500" : "text-success-600"}`}>
               {producto.stock === 0
                 ? "❌ Agotado"

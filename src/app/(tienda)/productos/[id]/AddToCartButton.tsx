@@ -29,7 +29,7 @@ export function AddToCartButton({
   const [added, setAdded] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
-  const outOfStock = itemType === "producto" && stock !== undefined && stock <= 0;
+  const outOfStock = itemType === "producto" && stock !== undefined && stock !== -1 && stock <= 0;
 
   const handleAdd = async () => {
     if (outOfStock) return;

@@ -104,6 +104,8 @@ export function deleteProducto(id: string) {
 export function descontarStock(productoId: string, cantidad: number): boolean {
   const producto = getProductoById(productoId);
   if (!producto) return false;
+  // -1 = stock ilimitado, no se descuenta
+  if (producto.stock === -1) return true;
   if (producto.stock < cantidad) return false;
 
   db.update(schema.productos)
@@ -116,6 +118,8 @@ export function descontarStock(productoId: string, cantidad: number): boolean {
 export function devolverStock(productoId: string, cantidad: number): void {
   const producto = getProductoById(productoId);
   if (!producto) return;
+  // -1 = stock ilimitado, no se devuelve
+  if (producto.stock === -1) return;
 
   db.update(schema.productos)
     .set({ stock: producto.stock + cantidad, updatedAt: new Date().toISOString() })

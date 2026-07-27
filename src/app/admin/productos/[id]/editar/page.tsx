@@ -29,6 +29,7 @@ export default function EditarProductoPage({
   const [categoria, setCategoria] = useState<string>(CATEGORIAS_PRODUCTOS[0].id);
   const [imagenUrl, setImagenUrl] = useState("");
   const [stock, setStock] = useState("0");
+  const [stockIlimitado, setStockIlimitado] = useState(false);
 
   useEffect(() => {
     fetch(`/api/productos/${productoId}`)
@@ -40,7 +41,13 @@ export default function EditarProductoPage({
           setPrecio(data.data.precio.toString());
           setCategoria(data.data.categoria);
           setImagenUrl(data.data.imagenUrl || "");
-          setStock((data.data.stock ?? 0).toString());
+          const stockVal = data.data.stock ?? 0;
+          if (stockVal === -1) {
+            setStockIlimitado(true);
+            setStock("0");
+          } else {
+            setStock(stockVal.toString());
+          }
         }
       })
       .finally(() => setFetching(false));
@@ -70,7 +77,7 @@ export default function EditarProductoPage({
           precio: parseFloat(precio),
           categoria,
           imagenUrl: imagenUrl || null,
-          stock: parseInt(stock) || 0,
+          stock: stockIlimitado ? -1 : parseInt(stock) || 0,
         }),
       });
 
@@ -153,14 +160,26 @@ export default function EditarProductoPage({
           />
         </div>
 
-        <Input
-          label="Stock disponible"
-          type="number"
-          min="0"
-          placeholder="0"
-          value={stock}
-          onChange={setStock}
-        />
+        <div className="space-y-3">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={stockIlimitado}
+              onChange={(e) => setStockIlimitado(e.target.checked)}
+              className="w-4 h-4 rounded border-lila-300 text-lila-600 focus:ring-lila-500"
+            />
+            <span className="text-body font-medium text-gray-700">Stock ilimitado</span>
+          </label>
+          <Input
+            label="Stock disponible"
+            type="number"
+            min="0"
+            placeholder="0"
+            value={stock}
+            onChange={setStock}
+            disabled={stockIlimitado}
+          />
+        </div>
 
         <div className="flex flex-col-reverse md:flex-row gap-3 pt-4">
           <Link
