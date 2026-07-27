@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Upload, X } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface ImageUploaderProps {
   value?: string;
@@ -12,9 +12,24 @@ interface ImageUploaderProps {
 
 export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
+  const [localPreview, setLocalPreview] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const previewRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      // Limpiar object URL al desmontar
+      if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+    };
+  }, []);
 
   const handleUpload = async (file: File) => {
+    // Mostrar preview local inmediato
+    const objectUrl = URL.createObjectURL(file);
+    setLocalPreview(objectUrl);
+    if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+    previewRef.current = objectUrl;
+
     setUploading(true);
     try {
       const formData = new FormData();
@@ -25,13 +40,18 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
       });
       if (res.ok) {
         const data = await res.json();
+        setLocalPreview(null);
+        if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+        previewRef.current = null;
         onChange(data.url);
       } else {
         const data = await res.json();
         alert(data.error || "Error subiendo imagen");
+        setLocalPreview(null);
       }
     } catch {
       alert("Error subiendo imagen");
+      setLocalPreview(null);
     } finally {
       setUploading(false);
     }
@@ -42,19 +62,34 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
     if (file) handleUpload(file);
   };
 
-  if (value) {
+  const displayUrl = localPreview || value;
+
+  if (displayUrl) {
     return (
       <div className="space-y-2">
         <div className="relative w-full max-w-xs">
           <img
-            src={value}
+            src={displayUrl}
             alt="Preview"
             className="w-full aspect-square object-cover rounded-xl border-2 border-lila-100"
           />
+          {uploading && (
+            <div className="absolute inset-0 bg-black/30 rounded-xl flex items-center justify-center">
+              <div className="bg-white/90 rounded-full px-4 py-2 text-body-sm font-medium text-lila-700 shadow-lg">
+                Comprimiendo y subiendo...
+              </div>
+            </div>
+          )}
           <button
             type="button"
-            onClick={() => onChange("")}
-            className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors"
+            onClick={() => {
+              if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+              previewRef.current = null;
+              setLocalPreview(null);
+              onChange("");
+            }}
+            disabled={uploading}
+            className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
             <X className="size-4 text-gray-600" />
           </button>
@@ -62,9 +97,10 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          className="text-body-sm text-lila-600 hover:text-lila-700 font-medium"
+          disabled={uploading}
+          className="text-body-sm text-lila-600 hover:text-lila-700 font-medium disabled:opacity-50"
         >
-          Cambiar imagen
+          {uploading ? "Subiendo..." : "Cambiar imagen"}
         </button>
         <input
           ref={fileRef}
