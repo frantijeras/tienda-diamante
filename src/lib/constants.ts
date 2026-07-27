@@ -1,19 +1,26 @@
-export const CATEGORIAS_PRODUCTOS = [
+export interface Categoria {
+  id: string;
+  nombre: string;
+  icono: string;
+  imagenUrl?: string;
+}
+
+export const CATEGORIAS_PRODUCTOS: Categoria[] = [
   { id: "pulseras", nombre: "Pulseras", icono: "🧵" },
   { id: "pegatinas", nombre: "Pegatinas", icono: "⭐" },
-  { id: "plastilina", nombre: "Muñecos de Plastilina", icono: "🪀" },
-] as const;
+  { id: "plastilina", nombre: "Figuras de Plastilina", icono: "🎨", imagenUrl: "/images/logo.png" },
+];
 
-export const CATEGORIAS_SERVICIOS = [
+export const CATEGORIAS_SERVICIOS: Categoria[] = [
   { id: "masajes", nombre: "Masajes", icono: "💆" },
   { id: "peluqueria", nombre: "Peluquería", icono: "💇" },
   { id: "maquillaje", nombre: "Maquillaje", icono: "🎨" },
-] as const;
+];
 
 export type CategoriaProducto = (typeof CATEGORIAS_PRODUCTOS)[number]["id"];
 export type CategoriaServicio = (typeof CATEGORIAS_SERVICIOS)[number]["id"];
 
-export const TODAS_CATEGORIAS = [
+export const TODAS_CATEGORIAS: Categoria[] = [
   ...CATEGORIAS_PRODUCTOS,
   ...CATEGORIAS_SERVICIOS,
 ];

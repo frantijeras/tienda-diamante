@@ -44,9 +44,10 @@ export function getCategoriaInfo(id: string) {
   const cats = [
     { id: "pulseras", nombre: "Pulseras", icono: "🧵" },
     { id: "pegatinas", nombre: "Pegatinas", icono: "⭐" },
-    { id: "plastilina", nombre: "Muñecos de Plastilina", icono: "🪀" },
+    { id: "plastilina", nombre: "Figuras de Plastilina", icono: "🎨", imagenUrl: "/images/logo.png" },
     { id: "masajes", nombre: "Masajes", icono: "💆" },
     { id: "peluqueria", nombre: "Peluquería", icono: "💇" },
+    { id: "maquillaje", nombre: "Maquillaje", icono: "🎨" },
   ];
   return cats.find((c) => c.id === id) || { id, nombre: id, icono: "📦" };
 }
