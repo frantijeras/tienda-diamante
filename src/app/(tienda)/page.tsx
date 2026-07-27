@@ -7,6 +7,8 @@ import { getAllServicios } from "@/lib/services";
 import Image from "next/image";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   const productos = getAllProductos().slice(0, 8);
   const servicios = getAllServicios().slice(0, 4);

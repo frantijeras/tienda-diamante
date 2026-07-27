@@ -7,6 +7,8 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { ServicioReservarButton } from "./ReservarButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function ServicioDetallePage({
   params,
 }: {

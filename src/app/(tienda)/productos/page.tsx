@@ -5,6 +5,8 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Search } from "lucide-react";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProductosPage({
   searchParams,
 }: {
