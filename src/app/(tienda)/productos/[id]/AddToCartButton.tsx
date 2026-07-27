@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ShoppingCart, Check } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import { Toast } from "@/components/ui/Toast";
@@ -12,7 +13,6 @@ interface AddToCartButtonProps {
   precioUnitario: number;
   itemType: "producto" | "servicio";
   fechaReserva?: string;
-  stock?: number;
 }
 
 export function AddToCartButton({
@@ -21,20 +21,16 @@ export function AddToCartButton({
   precioUnitario,
   itemType,
   fechaReserva,
-  stock,
 }: AddToCartButtonProps) {
   const [peticion, setPeticion] = useState("");
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
-  const outOfStock = itemType === "producto" && stock !== undefined && stock <= 0;
-
   const handleAdd = async () => {
-    if (outOfStock) return;
     setLoading(true);
     try {
-      const res = await fetch("/api/cart", {
+      const res = await fetch("/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -52,9 +48,6 @@ export function AddToCartButton({
         setAdded(true);
         setToast("Producto añadido al carrito");
         setTimeout(() => setAdded(false), 2000);
-      } else {
-        const data = await res.json();
-        setToast(data.error || "Error al añadir al carrito");
       }
     } catch {
       setToast("Error al añadir al carrito");
@@ -77,30 +70,20 @@ export function AddToCartButton({
       )}
 
       <div className="sticky bottom-0 left-0 right-0 p-4 bg-white border-t border-lila-100 md:static md:border-0 md:p-0">
-        {outOfStock ? (
-          <Button
-            variant="secondary"
-            size="xl"
-            fullWidth
-            disabled
-          >
-            ❌ Agotado
-          </Button>
-        ) : (
-          <Button
-            variant="primary"
-            size="xl"
-            fullWidth
-            loading={loading}
-            onClick={handleAdd}
-          >
-            {added
-              ? "✅ ¡Añadido!"
-              : itemType === "servicio"
-              ? "📅 Reservar"
-              : "🛒 Añadir al carrito"}
-          </Button>
-        )}
+        <Button
+          variant="primary"
+          size="xl"
+          fullWidth
+          loading={loading}
+          onClick={handleAdd}
+          leftIcon={added ? <Check className="size-6" /> : <ShoppingCart className="size-6" />}
+        >
+          {added
+            ? "¡Añadido! ✓"
+            : itemType === "servicio"
+            ? "📅 Reservar servicio"
+            : "Añadir al carrito"}
+        </Button>
       </div>
 
       <div className="flex items-center justify-center gap-2 mt-2">

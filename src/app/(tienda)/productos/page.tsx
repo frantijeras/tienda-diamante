@@ -2,6 +2,7 @@ import { getAllProductos } from "@/lib/products";
 import { CATEGORIAS_PRODUCTOS } from "@/lib/constants";
 import { ProductCard } from "@/components/tienda/ProductCard";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Search } from "lucide-react";
 import Link from "next/link";
 
 export default async function ProductosPage({
@@ -61,13 +62,12 @@ export default async function ProductosPage({
               precio={p.precio}
               imagenUrl={p.imagenUrl}
               basePath="/productos"
-              stock={p.stock}
             />
           ))}
         </div>
       ) : (
         <EmptyState
-          icon={<span className="text-4xl">🔍</span>}
+          icon={<Search className="size-10 text-lila-500" />}
           title={
             categoria
               ? `Pronto habrá productos en esta categoría`

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Plus } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
 interface ProductCardProps {
@@ -9,7 +10,6 @@ interface ProductCardProps {
   precio: number;
   imagenUrl: string | null;
   basePath: string;
-  stock?: number;
 }
 
 export function ProductCard({
@@ -19,15 +19,7 @@ export function ProductCard({
   precio,
   imagenUrl,
   basePath,
-  stock,
 }: ProductCardProps) {
-  const stockDisplay = () => {
-    if (stock === undefined || stock === null) return null;
-    if (stock > 5) return <span className="text-body-sm text-success-600">✅ En stock</span>;
-    if (stock > 0) return <span className="text-body-sm text-warning-600">⚠️ Quedan pocos ({stock})</span>;
-    return <span className="text-body-sm text-danger-600">❌ Agotado</span>;
-  };
-
   return (
     <Link
       href={`${basePath}/${id}`}
@@ -49,20 +41,13 @@ export function ProductCard({
         <p className="text-body-sm text-gray-500 line-clamp-2 mt-1 min-h-[2.5rem]">
           {descripcion}
         </p>
-        {stockDisplay() && <div className="mt-1">{stockDisplay()}</div>}
         <div className="flex items-center justify-between mt-3">
           <span className="text-h3 font-display font-semibold text-lila-700">
             {formatCurrency(precio)}
           </span>
-          {stock === 0 ? (
-            <span className="inline-flex items-center justify-center w-10 h-10 bg-gray-200 text-gray-400 rounded-full text-sm">
-              ❌
-            </span>
-          ) : (
-            <span className="inline-flex items-center justify-center w-10 h-10 bg-lila-500 text-white rounded-full group-hover:bg-lila-600 transition-colors text-lg">
-              ➕
-            </span>
-          )}
+          <span className="inline-flex items-center justify-center w-10 h-10 bg-lila-500 text-white rounded-full group-hover:bg-lila-600 transition-colors">
+            <Plus className="size-5" />
+          </span>
         </div>
       </div>
     </Link>

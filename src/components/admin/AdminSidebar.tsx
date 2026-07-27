@@ -2,13 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  Package,
+  Scissors,
+  ShoppingBag,
+  LogOut,
+  X,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/admin", label: "Dashboard", emoji: "📊" },
-  { href: "/admin/productos", label: "Productos", emoji: "📦" },
-  { href: "/admin/servicios", label: "Servicios", emoji: "✂️" },
-  { href: "/admin/encargos", label: "Encargos", emoji: "🛍️" },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/productos", label: "Productos", icon: Package },
+  { href: "/admin/servicios", label: "Servicios", icon: Scissors },
+  { href: "/admin/encargos", label: "Encargos", icon: ShoppingBag },
 ];
 
 interface AdminSidebarProps {
@@ -56,7 +64,7 @@ export function AdminSidebar({ open, onClose }: AdminSidebarProps) {
               onClick={onClose}
               className="md:hidden p-1 text-lila-200 hover:text-white"
             >
-              ❌
+              <X className="size-5" />
             </button>
           </div>
 
@@ -73,7 +81,7 @@ export function AdminSidebar({ open, onClose }: AdminSidebarProps) {
                     : "text-lila-100 hover:bg-lila-700"
                 )}
               >
-                <span className="text-lg">{item.emoji}</span>
+                <item.icon className="size-5" />
                 {item.label}
               </Link>
             ))}
@@ -86,7 +94,7 @@ export function AdminSidebar({ open, onClose }: AdminSidebarProps) {
               type="submit"
               className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-body font-medium text-lila-100 hover:bg-lila-700 transition-colors"
             >
-              <span>🚪</span>
+              <LogOut className="size-5" />
               Cerrar sesión
             </button>
           </form>

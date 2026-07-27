@@ -2,6 +2,7 @@ import { getAllServicios } from "@/lib/services";
 import { CATEGORIAS_SERVICIOS } from "@/lib/constants";
 import { ServiceCard } from "@/components/tienda/ServiceCard";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Search } from "lucide-react";
 import Link from "next/link";
 
 export default async function ServiciosPage({
@@ -65,7 +66,7 @@ export default async function ServiciosPage({
         </div>
       ) : (
         <EmptyState
-          icon={<span className="text-4xl">🔍</span>}
+          icon={<Search className="size-10 text-lila-500" />}
           title="Pronto habrá servicios disponibles"
           description="¡Vuelve pronto! 🌸"
         />

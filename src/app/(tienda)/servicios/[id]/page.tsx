@@ -2,6 +2,7 @@ import { getServicioById } from "@/lib/services";
 import { getCategoriaInfo, formatCurrency, getTomorrowDate, getMaxDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronLeft, Calendar } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { ServicioReservarButton } from "./ReservarButton";
@@ -29,7 +30,8 @@ export default async function ServicioDetallePage({
           href="/servicios"
           className="inline-flex items-center gap-1 text-body-sm text-lila-600 hover:text-lila-700 transition-colors mb-2"
         >
-          ← Volver a servicios
+          <ChevronLeft className="size-4" />
+          Volver a servicios
         </Link>
         <p className="text-caption text-gray-500">
           {catInfo.nombre} {catInfo.icono}
@@ -48,7 +50,8 @@ export default async function ServicioDetallePage({
           />
           <div className="absolute top-4 right-4">
             <Badge variant="info">
-              📅 Por reserva
+              <Calendar className="size-3" />
+              Por reserva
             </Badge>
           </div>
         </div>

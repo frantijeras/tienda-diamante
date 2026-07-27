@@ -1,9 +1,11 @@
 import { cn } from "@/lib/utils";
+import type { LucideIcon } from "lucide-react";
 
 interface BadgeProps {
   children: React.ReactNode;
   variant?: "pendiente" | "en_proceso" | "completado" | "cancelado" | "info" | "success" | "warning" | "neutral" | "lila";
   size?: "sm" | "md";
+  icon?: LucideIcon;
   className?: string;
 }
 
@@ -28,6 +30,7 @@ export function Badge({
   children,
   variant = "neutral",
   size = "md",
+  icon: Icon,
   className,
 }: BadgeProps) {
   return (
@@ -39,6 +42,7 @@ export function Badge({
         className
       )}
     >
+      {Icon && <Icon className="size-3" />}
       {children}
     </span>
   );

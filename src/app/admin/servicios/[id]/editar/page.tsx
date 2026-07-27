@@ -8,16 +8,16 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Select } from "@/components/ui/Select";
 import { ImageUploader } from "@/components/ui/ImageUploader";
 import { CATEGORIAS_SERVICIOS } from "@/lib/constants";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { Spinner } from "@/components/ui/Spinner";
 
 export default function EditarServicioPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const router = useRouter();
-  const servicioId = params.id;
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState("");
@@ -26,21 +26,25 @@ export default function EditarServicioPage({
   const [precio, setPrecio] = useState("");
   const [categoria, setCategoria] = useState<string>(CATEGORIAS_SERVICIOS[0].id);
   const [imagenUrl, setImagenUrl] = useState("");
+  const [servicioId, setServicioId] = useState("");
 
   useEffect(() => {
-    fetch(`/api/servicios/${servicioId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.data) {
-          setNombre(data.data.nombre);
-          setDescripcion(data.data.descripcion || "");
-          setPrecio(data.data.precio.toString());
-          setCategoria(data.data.categoria);
-          setImagenUrl(data.data.imagenUrl || "");
-        }
-      })
-      .finally(() => setFetching(false));
-  }, [servicioId]);
+    params.then(({ id }) => {
+      setServicioId(id);
+      fetch(`/api/servicios/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.data) {
+            setNombre(data.data.nombre);
+            setDescripcion(data.data.descripcion || "");
+            setPrecio(data.data.precio.toString());
+            setCategoria(data.data.categoria);
+            setImagenUrl(data.data.imagenUrl || "");
+          }
+        })
+        .finally(() => setFetching(false));
+    });
+  }, [params]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,7 +94,8 @@ export default function EditarServicioPage({
         href="/admin/servicios"
         className="inline-flex items-center gap-1 text-body-sm text-lila-600 hover:text-lila-700 transition-colors mb-4"
       >
-        ← Volver a servicios
+        <ChevronLeft className="size-4" />
+        Volver a servicios
       </Link>
 
       <h1 className="text-h2 font-display font-semibold text-gray-900 mb-6">

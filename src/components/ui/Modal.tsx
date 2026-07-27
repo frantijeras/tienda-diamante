@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
 import { useEffect } from "react";
 
 interface ModalProps {
@@ -75,7 +76,7 @@ export function Modal({
             onClick={onClose}
             className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
           >
-            ❌
+            <X className="size-5" />
           </button>
         </div>
         {children}

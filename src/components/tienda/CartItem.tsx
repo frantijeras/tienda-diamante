@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { X, Plus, Minus, Calendar } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import type { CartItem as CartItemType } from "@/lib/cart";
 
@@ -37,7 +38,7 @@ export function CartItemComponent({
             className="p-1 text-gray-400 hover:text-danger-500 transition-colors flex-shrink-0"
             aria-label="Eliminar"
           >
-            ❌
+            <X className="size-5" />
           </button>
         </div>
 
@@ -58,7 +59,8 @@ export function CartItemComponent({
 
         {item.fechaReserva && (
           <div className="mt-2 inline-flex items-center gap-1.5 text-body-sm text-lila-700">
-            📅 {formatDate(item.fechaReserva)}
+            <Calendar className="size-4" />
+            {formatDate(item.fechaReserva)}
           </div>
         )}
 
@@ -71,7 +73,7 @@ export function CartItemComponent({
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-lila-700 disabled:opacity-40 shadow-sm transition-colors"
                 aria-label="Disminuir cantidad"
               >
-                ➖
+                <Minus className="size-4" />
               </button>
               <span className="w-8 text-center font-semibold text-gray-900">
                 {item.cantidad}
@@ -82,7 +84,7 @@ export function CartItemComponent({
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-lila-700 disabled:opacity-40 shadow-sm transition-colors"
                 aria-label="Aumentar cantidad"
               >
-                ➕
+                <Plus className="size-4" />
               </button>
             </div>
             <span className="text-h4 font-display font-semibold text-lila-700">

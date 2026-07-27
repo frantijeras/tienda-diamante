@@ -20,15 +20,10 @@ export const metadata: Metadata = {
   title: "La Tienda Diamante de Paula",
   description:
     "Pequeños tesoros hechos a mano. Productos y servicios de Paula para familiares y amigos.",
-  icons: {
-    icon: "/images/logo-tienda-diamante.png",
-    apple: "/images/logo-tienda-diamante.png",
-  },
   openGraph: {
     title: "La Tienda Diamante de Paula",
     description: "Pequeños tesoros hechos a mano",
     type: "website",
-    images: "/images/logo-tienda-diamante.png",
   },
 };
 

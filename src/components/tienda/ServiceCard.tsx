@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Calendar } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 
@@ -33,7 +34,8 @@ export function ServiceCard({
         />
         <div className="absolute top-3 right-3">
           <Badge variant="info" size="sm">
-            📅 Por reserva
+            <Calendar className="size-3" />
+            Por reserva
           </Badge>
         </div>
       </div>
@@ -49,7 +51,8 @@ export function ServiceCard({
             {formatCurrency(precio)}
           </span>
           <span className="text-body-sm font-semibold text-lila-600 flex items-center gap-1">
-            📅 Reservar
+            <Calendar className="size-4" />
+            Reservar
           </span>
         </div>
       </div>

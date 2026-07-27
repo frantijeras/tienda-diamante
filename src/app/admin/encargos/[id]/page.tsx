@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
@@ -32,26 +33,29 @@ interface Encargo {
 export default function EncargoDetallePage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const encargoId = params.id;
   const [encargo, setEncargo] = useState<Encargo | null>(null);
   const [loading, setLoading] = useState(true);
   const [notas, setNotas] = useState("");
   const [savingNotas, setSavingNotas] = useState(false);
   const [cancelling, setCancelling] = useState(false);
+  const [encargoId, setEncargoId] = useState("");
 
   useEffect(() => {
-    fetch(`/api/encargos/${encargoId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.data) {
-          setEncargo(data.data);
-          setNotas(data.data.notas || "");
-        }
-      })
-      .finally(() => setLoading(false));
-  }, [encargoId]);
+    params.then(({ id }) => {
+      setEncargoId(id);
+      fetch(`/api/encargos/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.data) {
+            setEncargo(data.data);
+            setNotas(data.data.notas || "");
+          }
+        })
+        .finally(() => setLoading(false));
+    });
+  }, [params]);
 
   const handleEstadoChange = async (newEstado: string) => {
     await fetch(`/api/encargos/${encargoId}`, {
@@ -109,7 +113,8 @@ export default function EncargoDetallePage({
         href="/admin/encargos"
         className="inline-flex items-center gap-1 text-body-sm text-lila-600 hover:text-lila-700 transition-colors mb-4"
       >
-        ← Volver a encargos
+        <ChevronLeft className="size-4" />
+        Volver a encargos
       </Link>
 
       <h1 className="text-h2 font-display font-semibold text-gray-900 mb-6">

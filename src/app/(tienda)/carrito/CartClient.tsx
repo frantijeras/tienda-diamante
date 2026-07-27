@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ShoppingCart, Trash2 } from "lucide-react";
 import { CartItemComponent } from "@/components/tienda/CartItem";
 import { ConfirmOrderModal } from "@/components/tienda/ConfirmOrderModal";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -61,7 +62,7 @@ export function CartClient({ initialCart }: CartClientProps) {
     return (
       <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-8">
         <EmptyState
-          icon={<span className="text-4xl">🛒</span>}
+          icon={<ShoppingCart className="size-10 text-lila-500" />}
           title="Tu carrito está vacío"
           description="Añade productos o servicios para hacer un encargo a Paula."
           action={
@@ -87,7 +88,8 @@ export function CartClient({ initialCart }: CartClientProps) {
           onClick={() => setShowClearModal(true)}
           className="flex items-center gap-1.5 text-body-sm text-gray-500 hover:text-danger-500 transition-colors"
         >
-          🗑️ Vaciar
+          <Trash2 className="size-4" />
+          Vaciar
         </button>
       </div>
 

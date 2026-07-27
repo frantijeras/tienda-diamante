@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Select } from "@/components/ui/Select";
 import { ImageUploader } from "@/components/ui/ImageUploader";
 import { CATEGORIAS_PRODUCTOS } from "@/lib/constants";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 export default function NuevoProductoPage() {
@@ -68,7 +69,8 @@ export default function NuevoProductoPage() {
         href="/admin/productos"
         className="inline-flex items-center gap-1 text-body-sm text-lila-600 hover:text-lila-700 transition-colors mb-4"
       >
-        ← Volver a productos
+        <ChevronLeft className="size-4" />
+        Volver a productos
       </Link>
 
       <h1 className="text-h2 font-display font-semibold text-gray-900 mb-6">

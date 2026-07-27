@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Edit, Archive, ArchiveRestore, Trash2 } from "lucide-react";
 
 interface AdminProductosActionsProps {
   id: string;
@@ -28,21 +29,25 @@ export function AdminProductosActions({ id, activo }: AdminProductosActionsProps
         className="p-2 text-gray-400 hover:text-lila-600 transition-colors"
         title="Editar"
       >
-        ✏️
+        <Edit className="size-5" />
       </a>
       <button
         onClick={handleToggle}
         className="p-2 text-gray-400 hover:text-warning-600 transition-colors"
         title={activo ? "Archivar" : "Desarchivar"}
       >
-        {activo ? "📁" : "📂"}
+        {activo ? (
+          <Archive className="size-5" />
+        ) : (
+          <ArchiveRestore className="size-5" />
+        )}
       </button>
       <button
         onClick={handleDelete}
         className="p-2 text-gray-400 hover:text-red-600 transition-colors"
         title="Eliminar"
       >
-        🗑️
+        <Trash2 className="size-5" />
       </button>
     </div>
   );

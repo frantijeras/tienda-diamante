@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function CartIcon() {
@@ -34,7 +35,7 @@ export function CartIcon() {
       className="relative p-2 -mr-2"
       aria-label={`Carrito, ${count} ${count === 1 ? "ítem" : "ítems"}`}
     >
-      <span className="text-xl">🛒</span>
+      <ShoppingCart className="size-6 text-lila-700" />
       {count > 0 && (
         <span
           key={count}

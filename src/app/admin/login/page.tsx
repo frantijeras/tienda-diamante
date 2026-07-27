@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import Link from "next/link";
@@ -59,7 +60,7 @@ export default function AdminLoginPage() {
             value={password}
             onChange={setPassword}
             error={error}
-            leftIcon={<span>🔒</span>}
+            leftIcon={<Lock className="size-5" />}
             autoComplete="current-password"
             autoFocus
             required
