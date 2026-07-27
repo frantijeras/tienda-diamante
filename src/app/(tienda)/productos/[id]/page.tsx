@@ -44,6 +44,7 @@ export default async function ProductoDetallePage({
             src={producto.imagenUrl || "/images/placeholder.svg"}
             alt={producto.nombre}
             fill
+            unoptimized
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
             priority

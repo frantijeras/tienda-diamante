@@ -32,6 +32,7 @@ export function ProductCard({
           src={imagenUrl || "/images/placeholder.svg"}
           alt={nombre}
           fill
+          unoptimized
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 768px) 50vw, 25vw"
         />

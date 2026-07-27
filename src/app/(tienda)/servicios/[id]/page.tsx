@@ -44,6 +44,7 @@ export default async function ServicioDetallePage({
             src={servicio.imagenUrl || "/images/placeholder.svg"}
             alt={servicio.nombre}
             fill
+            unoptimized
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
