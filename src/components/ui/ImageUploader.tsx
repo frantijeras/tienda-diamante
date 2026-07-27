@@ -10,12 +10,12 @@ interface ImageUploaderProps {
   error?: string;
 }
 
-function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<File> {
+function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<Blob | null> {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
+      URL.revokeObjectURL(img.src);
       let { width, height } = img;
-      // Redimensionar si supera el máximo
       if (width > maxWidth || height > maxWidth) {
         if (width > height) {
           height = Math.round(height * (maxWidth / width));
@@ -31,26 +31,18 @@ function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<File
       canvas.height = height;
       const ctx = canvas.getContext("2d");
       if (!ctx) {
-        resolve(file);
+        resolve(null);
         return;
       }
       ctx.drawImage(img, 0, 0, width, height);
 
       canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            const name = file.name.replace(/\.[^.]+$/, ".jpg");
-            const optimized = new File([blob], name, { type: "image/jpeg" });
-            resolve(optimized);
-          } else {
-            resolve(file);
-          }
-        },
+        (blob) => resolve(blob),
         "image/jpeg",
         quality
       );
     };
-    img.onerror = () => resolve(file);
+    img.onerror = () => { URL.revokeObjectURL(img.src); resolve(null); };
     img.src = URL.createObjectURL(file);
   });
 }
@@ -65,7 +57,14 @@ export function ImageUploader({ value, onChange, error }: ImageUploaderProps) {
       // Comprimir la imagen antes de subir
       const compressed = await compressImage(rawFile);
       const formData = new FormData();
-      formData.append("file", compressed);
+      if (compressed) {
+        // Enviar blob comprimido como JPEG
+        const filename = rawFile.name.replace(/\.[^.]+$/, ".jpg");
+        formData.append("file", compressed, filename);
+      } else {
+        // Fallback: enviar original
+        formData.append("file", rawFile);
+      }
       const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
