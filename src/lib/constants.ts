@@ -7,6 +7,7 @@ export const CATEGORIAS_PRODUCTOS = [
 export const CATEGORIAS_SERVICIOS = [
   { id: "masajes", nombre: "Masajes", icono: "💆" },
   { id: "peluqueria", nombre: "Peluquería", icono: "💇" },
+  { id: "maquillaje", nombre: "Maquillaje", icono: "🎨" },
 ] as const;
 
 export type CategoriaProducto = (typeof CATEGORIAS_PRODUCTOS)[number]["id"];
