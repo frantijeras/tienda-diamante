@@ -47,7 +47,7 @@ export function getCategoriaInfo(id: string) {
     { id: "plastilina", nombre: "Figuras de Plastilina", icono: "🌈" },
     { id: "masajes", nombre: "Masajes", icono: "💆" },
     { id: "peluqueria", nombre: "Peluquería", icono: "💇" },
-    { id: "maquillaje", nombre: "Maquillaje", icono: "🎨" },
+    { id: "maquillaje", nombre: "Maquillaje", icono: "💄" },
   ];
   return cats.find((c) => c.id === id) || { id, nombre: id, icono: "📦" };
 }

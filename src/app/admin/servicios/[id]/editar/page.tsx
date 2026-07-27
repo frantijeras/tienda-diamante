@@ -15,9 +15,11 @@ import { Spinner } from "@/components/ui/Spinner";
 export default function EditarServicioPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
   const router = useRouter();
+  const servicioId = params.id;
+
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState("");
@@ -26,25 +28,21 @@ export default function EditarServicioPage({
   const [precio, setPrecio] = useState("");
   const [categoria, setCategoria] = useState<string>(CATEGORIAS_SERVICIOS[0].id);
   const [imagenUrl, setImagenUrl] = useState("");
-  const [servicioId, setServicioId] = useState("");
 
   useEffect(() => {
-    params.then(({ id }) => {
-      setServicioId(id);
-      fetch(`/api/servicios/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.data) {
-            setNombre(data.data.nombre);
-            setDescripcion(data.data.descripcion || "");
-            setPrecio(data.data.precio.toString());
-            setCategoria(data.data.categoria);
-            setImagenUrl(data.data.imagenUrl || "");
-          }
-        })
-        .finally(() => setFetching(false));
-    });
-  }, [params]);
+    fetch(`/api/servicios/${servicioId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.data) {
+          setNombre(data.data.nombre);
+          setDescripcion(data.data.descripcion || "");
+          setPrecio(data.data.precio.toString());
+          setCategoria(data.data.categoria);
+          setImagenUrl(data.data.imagenUrl || "");
+        }
+      })
+      .finally(() => setFetching(false));
+  }, [servicioId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
