@@ -16,7 +16,16 @@ export default function HomePage() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-lila-100 via-white to-lila-50 py-12 md:py-20">
         <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 text-center">
-          <p className="text-7xl mb-4">✨</p>
+          <div className="w-28 h-28 md:w-36 md:h-36 mx-auto mb-4 relative">
+            <Image
+              src="/images/logo.png"
+              alt="La Tienda Diamante de Paula"
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 112px, 144px"
+              priority
+            />
+          </div>
           <h1 className="text-display font-display font-semibold text-gray-900 mb-3">
             Bienvenido a la tienda
           </h1>
