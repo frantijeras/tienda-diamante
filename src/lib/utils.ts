@@ -44,7 +44,7 @@ export function getCategoriaInfo(id: string) {
   const cats = [
     { id: "pulseras", nombre: "Pulseras", icono: "🧵" },
     { id: "pegatinas", nombre: "Pegatinas", icono: "⭐" },
-    { id: "plastilina", nombre: "Figuras de Plastilina", icono: "🎨", imagenUrl: "/images/logo.png" },
+    { id: "plastilina", nombre: "Figuras de Plastilina", icono: "🌈" },
     { id: "masajes", nombre: "Masajes", icono: "💆" },
     { id: "peluqueria", nombre: "Peluquería", icono: "💇" },
     { id: "maquillaje", nombre: "Maquillaje", icono: "🎨" },

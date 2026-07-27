@@ -8,7 +8,7 @@ export interface Categoria {
 export const CATEGORIAS_PRODUCTOS: Categoria[] = [
   { id: "pulseras", nombre: "Pulseras", icono: "🧵" },
   { id: "pegatinas", nombre: "Pegatinas", icono: "⭐" },
-  { id: "plastilina", nombre: "Figuras de Plastilina", icono: "🎨", imagenUrl: "/images/logo.png" },
+  { id: "plastilina", nombre: "Figuras de Plastilina", icono: "🌈" },
 ];
 
 export const CATEGORIAS_SERVICIOS: Categoria[] = [
