@@ -38,6 +38,7 @@ export default function AdminServiciosPage() {
                     src={servicio.imagenUrl || "/images/placeholder.svg"}
                     alt={servicio.nombre}
                     fill
+                    unoptimized
                     className="object-cover"
                     sizes="64px"
                   />

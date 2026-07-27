@@ -39,6 +39,7 @@ export default function AdminProductosPage() {
                     src={producto.imagenUrl || "/images/placeholder.svg"}
                     alt={producto.nombre}
                     fill
+                    unoptimized
                     className="object-cover"
                     sizes="64px"
                   />
