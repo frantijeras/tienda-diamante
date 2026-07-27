@@ -20,7 +20,7 @@ export function CategoryGrid({ title, categories, basePath }: CategoryGridProps)
       <h2 className="text-h2 font-display font-semibold text-gray-900 mb-4">
         {title}
       </h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-stagger">
+      <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 animate-stagger">
         {categories.map((cat) => (
           <Link
             key={cat.id}

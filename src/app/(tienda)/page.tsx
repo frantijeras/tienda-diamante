@@ -58,7 +58,7 @@ export default function HomePage() {
           <h2 className="text-h2 font-display font-semibold text-gray-900 mb-4">
             Servicios
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-stagger">
+          <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 animate-stagger">
             {CATEGORIAS_SERVICIOS.map((cat) => (
               <Link
                 key={cat.id}
@@ -94,7 +94,7 @@ export default function HomePage() {
             <h2 className="text-h2 font-display font-semibold text-gray-900 mb-4">
               Productos destacados ✨
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 animate-stagger">
+            <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 animate-stagger">
               {productos.map((p) => (
                 <ProductCard
                   key={p.id}
@@ -116,7 +116,7 @@ export default function HomePage() {
             <h2 className="text-h2 font-display font-semibold text-gray-900 mb-4">
               Servicios disponibles 💆
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 animate-stagger">
+            <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 animate-stagger">
               {servicios.map((s) => (
                 <ServiceCard
                   key={s.id}
