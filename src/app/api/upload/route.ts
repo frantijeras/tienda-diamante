@@ -40,17 +40,15 @@ export async function POST(request: NextRequest) {
 
     const filename = `${uuidv4()}.jpg`;
 
-    // Guardar en la carpeta public del proyecto (desarrollo)
+    // Guardar donde Caddy pueda servirlo directamente
+    const caddyDir = "/var/www/tienda-uploads/productos";
+    if (!fs.existsSync(caddyDir)) fs.mkdirSync(caddyDir, { recursive: true });
+    fs.writeFileSync(path.join(caddyDir, filename), optimized);
+
+    // También guardar en public/ del proyecto por compatibilidad
     const devDir = path.join(process.cwd(), "public", "uploads", "productos");
     if (!fs.existsSync(devDir)) fs.mkdirSync(devDir, { recursive: true });
     fs.writeFileSync(path.join(devDir, filename), optimized);
-
-    // También guardar en .next/standalone/public (producción standalone)
-    const standaloneDir = path.join(process.cwd(), ".next", "standalone", "public", "uploads", "productos");
-    if (fs.existsSync(path.join(process.cwd(), ".next", "standalone"))) {
-      if (!fs.existsSync(standaloneDir)) fs.mkdirSync(standaloneDir, { recursive: true });
-      fs.writeFileSync(path.join(standaloneDir, filename), optimized);
-    }
 
     return NextResponse.json(
       { url: `/uploads/productos/${filename}` },
