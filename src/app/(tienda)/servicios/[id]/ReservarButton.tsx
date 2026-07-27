@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Check } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Toast";
 import Link from "next/link";
@@ -32,7 +32,7 @@ export function ServicioReservarButton({
 
     setLoading(true);
     try {
-      const res = await fetch("/api/cart/add", {
+      const res = await fetch("/api/cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -87,8 +87,7 @@ export function ServicioReservarButton({
           loading={loading}
           disabled={!fecha}
           onClick={handleReservar}
-          leftIcon={added ? <Check className="size-6" /> : <Calendar className="size-6" />}
-        >
+>
           {added
             ? "¡Reservado! ✓"
             : fecha

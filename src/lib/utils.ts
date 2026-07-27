@@ -45,7 +45,6 @@ export function getCategoriaInfo(id: string) {
     { id: "pulseras", nombre: "Pulseras", icono: "🧵" },
     { id: "pegatinas", nombre: "Pegatinas", icono: "⭐" },
     { id: "plastilina", nombre: "Muñecos de Plastilina", icono: "🪀" },
-    { id: "maquillaje", nombre: "Maquillaje", icono: "💄" },
     { id: "masajes", nombre: "Masajes", icono: "💆" },
     { id: "peluqueria", nombre: "Peluquería", icono: "💇" },
   ];

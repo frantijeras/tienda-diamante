@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Edit, Archive, ArchiveRestore } from "lucide-react";
+import { Edit, Archive, ArchiveRestore, Trash2 } from "lucide-react";
 
 interface AdminProductosActionsProps {
   id: string;
@@ -12,6 +12,12 @@ export function AdminProductosActions({ id, activo }: AdminProductosActionsProps
   const router = useRouter();
 
   const handleToggle = async () => {
+    await fetch(`/api/productos/${id}`, { method: "PATCH" });
+    router.refresh();
+  };
+
+  const handleDelete = async () => {
+    if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
     await fetch(`/api/productos/${id}`, { method: "DELETE" });
     router.refresh();
   };
@@ -35,6 +41,13 @@ export function AdminProductosActions({ id, activo }: AdminProductosActionsProps
         ) : (
           <ArchiveRestore className="size-5" />
         )}
+      </button>
+      <button
+        onClick={handleDelete}
+        className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+        title="Eliminar"
+      >
+        <Trash2 className="size-5" />
       </button>
     </div>
   );

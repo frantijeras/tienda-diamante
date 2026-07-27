@@ -92,3 +92,7 @@ export function archiveProducto(id: string) {
 export function unarchiveProducto(id: string) {
   return updateProducto(id, { activo: true });
 }
+
+export function deleteProducto(id: string) {
+  db.delete(schema.productos).where(eq(schema.productos.id, id)).run();
+}

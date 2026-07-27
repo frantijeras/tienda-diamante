@@ -139,28 +139,6 @@ const productos = [
     createdAt: now,
     updatedAt: now,
   },
-  {
-    id: uuidv4(),
-    nombre: "Kit Maquillaje Princesa",
-    descripcion: "Kit de maquillaje infantil con brillos y colores suaves.",
-    precio: 8.0,
-    categoria: "maquillaje",
-    imagenUrl: null,
-    activo: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: uuidv4(),
-    nombre: "Labial de Fresa",
-    descripcion: "Labial con color suave y olor a fresa.",
-    precio: 3.5,
-    categoria: "maquillaje",
-    imagenUrl: null,
-    activo: true,
-    createdAt: now,
-    updatedAt: now,
-  },
 ];
 
 // Seed services

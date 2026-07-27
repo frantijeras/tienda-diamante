@@ -2,7 +2,6 @@ export const CATEGORIAS_PRODUCTOS = [
   { id: "pulseras", nombre: "Pulseras", icono: "🧵" },
   { id: "pegatinas", nombre: "Pegatinas", icono: "⭐" },
   { id: "plastilina", nombre: "Muñecos de Plastilina", icono: "🪀" },
-  { id: "maquillaje", nombre: "Maquillaje", icono: "💄" },
 ] as const;
 
 export const CATEGORIAS_SERVICIOS = [
