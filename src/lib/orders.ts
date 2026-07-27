@@ -91,6 +91,10 @@ export function createEncargo(input: CreateEncargoInput) {
 }
 
 export function updateEncargoEstado(id: string, estado: string) {
+  // No permitir cambiar estado si está cancelado
+  const encargo = getEncargoById(id);
+  if (encargo?.cancelado) return encargo;
+
   const now = new Date().toISOString();
   db.update(schema.encargos)
     .set({ estado, updatedAt: now })
@@ -126,7 +130,7 @@ export function cancelarEncargo(id: string) {
 
   const now = new Date().toISOString();
   db.update(schema.encargos)
-    .set({ cancelado: true, updatedAt: now })
+    .set({ cancelado: true, estado: "cancelado", updatedAt: now })
     .where(eq(schema.encargos.id, id))
     .run();
 
