@@ -26,6 +26,7 @@ export default function EditarProductoPage({
   const [precio, setPrecio] = useState("");
   const [categoria, setCategoria] = useState<string>(CATEGORIAS_PRODUCTOS[0].id);
   const [imagenUrl, setImagenUrl] = useState("");
+  const [stock, setStock] = useState("0");
   const [productoId, setProductoId] = useState("");
 
   useEffect(() => {
@@ -40,6 +41,7 @@ export default function EditarProductoPage({
             setPrecio(data.data.precio.toString());
             setCategoria(data.data.categoria);
             setImagenUrl(data.data.imagenUrl || "");
+            setStock((data.data.stock ?? 0).toString());
           }
         })
         .finally(() => setFetching(false));
@@ -70,6 +72,7 @@ export default function EditarProductoPage({
           precio: parseFloat(precio),
           categoria,
           imagenUrl: imagenUrl || null,
+          stock: parseInt(stock) || 0,
         }),
       });
 
@@ -151,6 +154,15 @@ export default function EditarProductoPage({
             }))}
           />
         </div>
+
+        <Input
+          label="Stock disponible"
+          type="number"
+          min="0"
+          placeholder="0"
+          value={stock}
+          onChange={setStock}
+        />
 
         <div className="flex flex-col-reverse md:flex-row gap-3 pt-4">
           <Link

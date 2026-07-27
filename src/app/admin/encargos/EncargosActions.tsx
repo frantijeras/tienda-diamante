@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 interface EncargosActionsProps {
   id: string;
   estado: string;
+  cancelado?: boolean;
 }
 
-export function EncargosActions({ id, estado }: EncargosActionsProps) {
+export function EncargosActions({ id, estado, cancelado }: EncargosActionsProps) {
   const router = useRouter();
 
   const handleChangeEstado = async (newEstado: string) => {
@@ -18,6 +19,14 @@ export function EncargosActions({ id, estado }: EncargosActionsProps) {
     });
     router.refresh();
   };
+
+  if (cancelado) {
+    return (
+      <div className="inline-flex items-center h-10 px-3 text-body-sm font-semibold rounded-full bg-danger-100 text-danger-700 border-2 border-danger-300">
+        ❌ Cancelado
+      </div>
+    );
+  }
 
   return (
     <select

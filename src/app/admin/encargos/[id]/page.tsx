@@ -23,6 +23,7 @@ interface Encargo {
   clienteNombre: string;
   fechaEncargo: string;
   estado: string;
+  cancelado?: boolean;
   total: number;
   notas: string | null;
   items: EncargoItem[];
@@ -38,6 +39,7 @@ export default function EncargoDetallePage({
   const [loading, setLoading] = useState(true);
   const [notas, setNotas] = useState("");
   const [savingNotas, setSavingNotas] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
   const [encargoId, setEncargoId] = useState("");
 
   useEffect(() => {
@@ -74,6 +76,20 @@ export default function EncargoDetallePage({
       body: JSON.stringify({ notas }),
     });
     setSavingNotas(false);
+  };
+
+  const handleCancelar = async () => {
+    if (!confirm("¿Seguro que quieres cancelar este encargo? Se devolverá el stock de los productos.")) return;
+    setCancelling(true);
+    await fetch(`/api/encargos/${encargoId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cancelar: true }),
+    });
+    const res = await fetch(`/api/encargos/${encargoId}`);
+    const data = await res.json();
+    if (data.data) setEncargo(data.data);
+    setCancelling(false);
   };
 
   if (loading) return <Spinner />;
@@ -115,27 +131,38 @@ export default function EncargoDetallePage({
         <p className="text-body-sm text-gray-500 mt-1">
           Pedido el {formatDate(encargo.fechaEncargo)}
         </p>
+        {encargo.cancelado && (
+          <p className="text-body-sm font-semibold text-danger-600 mt-2">
+            ❌ Este encargo ha sido cancelado
+          </p>
+        )}
       </div>
 
       <div className="bg-white rounded-2xl border border-lila-100 shadow-sm p-6 mb-6">
         <h2 className="text-caption text-gray-500 uppercase tracking-wide font-semibold mb-3">
           Estado
         </h2>
-        <select
-          value={encargo.estado}
-          onChange={(e) => handleEstadoChange(e.target.value)}
-          className={`h-12 px-4 pr-10 text-body font-semibold rounded-full appearance-none cursor-pointer border-2 transition-colors ${
-            encargo.estado === "pendiente"
-              ? "bg-warning-100 text-warning-700 border-warning-300"
-              : encargo.estado === "en_proceso"
-              ? "bg-info-100 text-info-700 border-info-300"
-              : "bg-success-100 text-success-700 border-success-300"
-          }`}
-        >
-          <option value="pendiente">⏰ Pendiente</option>
-          <option value="en_proceso">🔄 En proceso</option>
-          <option value="completado">✓ Completado</option>
-        </select>
+        {encargo.cancelado ? (
+          <div className="inline-flex items-center gap-2 h-12 px-4 text-body font-semibold rounded-full bg-danger-100 text-danger-700 border-2 border-danger-300">
+            ❌ Cancelado
+          </div>
+        ) : (
+          <select
+            value={encargo.estado}
+            onChange={(e) => handleEstadoChange(e.target.value)}
+            className={`h-12 px-4 pr-10 text-body font-semibold rounded-full appearance-none cursor-pointer border-2 transition-colors ${
+              encargo.estado === "pendiente"
+                ? "bg-warning-100 text-warning-700 border-warning-300"
+                : encargo.estado === "en_proceso"
+                ? "bg-info-100 text-info-700 border-info-300"
+                : "bg-success-100 text-success-700 border-success-300"
+            }`}
+          >
+            <option value="pendiente">⏰ Pendiente</option>
+            <option value="en_proceso">🔄 En proceso</option>
+            <option value="completado">✓ Completado</option>
+          </select>
+        )}
       </div>
 
       <div className="bg-white rounded-2xl border border-lila-100 shadow-sm p-6 mb-6">
@@ -175,6 +202,21 @@ export default function EncargoDetallePage({
           </div>
         </div>
       </div>
+
+      {!encargo.cancelado && encargo.estado !== "completado" && (
+        <div className="bg-white rounded-2xl border border-danger-200 shadow-sm p-6 mb-6">
+          <h2 className="text-caption text-gray-500 uppercase tracking-wide font-semibold mb-3">
+            Acciones
+          </h2>
+          <button
+            onClick={handleCancelar}
+            disabled={cancelling}
+            className="inline-flex items-center justify-center px-5 py-2.5 text-body font-semibold text-white bg-danger-500 hover:bg-danger-600 rounded-lg transition-colors disabled:opacity-50"
+          >
+            {cancelling ? "Cancelando..." : "Cancelar encargo"}
+          </button>
+        </div>
+      )}
 
       <div className="bg-white rounded-2xl border border-lila-100 shadow-sm p-6">
         <h2 className="text-caption text-gray-500 uppercase tracking-wide font-semibold mb-3">

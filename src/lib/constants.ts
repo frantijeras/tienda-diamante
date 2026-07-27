@@ -21,6 +21,7 @@ export const ESTADOS_ENCARGO = [
   { id: "pendiente", nombre: "Pendiente", color: "bg-warning-100 text-warning-700", icon: "Clock" },
   { id: "en_proceso", nombre: "En proceso", color: "bg-info-100 text-info-700", icon: "Loader2" },
   { id: "completado", nombre: "Completado", color: "bg-success-100 text-success-700", icon: "CheckCircle2" },
+  { id: "cancelado", nombre: "Cancelado", color: "bg-danger-100 text-danger-700", icon: "XCircle" },
 ] as const;
 
 export type EstadoEncargo = (typeof ESTADOS_ENCARGO)[number]["id"];

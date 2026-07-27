@@ -1,6 +1,7 @@
 import { db, schema } from "./db";
 import { eq, desc, asc } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
+import { devolverStock } from "./products";
 
 export interface CreateEncargoInput {
   clienteNombre: string;
@@ -113,6 +114,28 @@ export function getEncargosStats() {
     pendiente: all.filter((e) => e.estado === "pendiente").length,
     en_proceso: all.filter((e) => e.estado === "en_proceso").length,
     completado: all.filter((e) => e.estado === "completado").length,
+    cancelado: all.filter((e) => e.cancelado).length,
     total: all.length,
   };
+}
+
+export function cancelarEncargo(id: string) {
+  const encargo = getEncargoById(id);
+  if (!encargo) return null;
+  if (encargo.cancelado) return encargo;
+
+  const now = new Date().toISOString();
+  db.update(schema.encargos)
+    .set({ cancelado: true, updatedAt: now })
+    .where(eq(schema.encargos.id, id))
+    .run();
+
+  // Devolver stock de productos
+  for (const item of encargo.items) {
+    if (item.itemType === "producto") {
+      devolverStock(item.itemId, item.cantidad);
+    }
+  }
+
+  return getEncargoById(id);
 }

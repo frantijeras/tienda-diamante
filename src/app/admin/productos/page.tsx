@@ -54,6 +54,9 @@ export default function AdminProductosPage() {
                     <span className="text-body-sm font-semibold text-lila-700">
                       {formatCurrency(producto.precio)}
                     </span>
+                    <span className="text-body-sm text-gray-500">
+                      Stock: {producto.stock}
+                    </span>
                     <Badge
                       variant={producto.activo ? "success" : "neutral"}
                       size="sm"

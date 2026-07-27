@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: "pendiente" | "en_proceso" | "completado" | "info" | "success" | "warning" | "neutral" | "lila";
+  variant?: "pendiente" | "en_proceso" | "completado" | "cancelado" | "info" | "success" | "warning" | "neutral" | "lila";
   size?: "sm" | "md";
   icon?: LucideIcon;
   className?: string;
@@ -13,6 +13,7 @@ const variantStyles = {
   pendiente: "bg-warning-100 text-warning-700",
   en_proceso: "bg-info-100 text-info-700",
   completado: "bg-success-100 text-success-700",
+  cancelado: "bg-danger-100 text-danger-700",
   info: "bg-info-100 text-info-700",
   success: "bg-success-100 text-success-700",
   warning: "bg-warning-100 text-warning-700",

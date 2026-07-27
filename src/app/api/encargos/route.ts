@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAllEncargos, createEncargo } from "@/lib/orders";
 import { isAuthenticated } from "@/lib/auth";
 import { clearCart } from "@/lib/cart";
+import { descontarStock } from "@/lib/products";
 
 export async function GET(request: NextRequest) {
   try {
@@ -41,6 +42,30 @@ export async function POST(request: NextRequest) {
         { error: "El carrito está vacío" },
         { status: 400 }
       );
+    }
+
+    // Verificar stock antes de crear el encargo
+    const productosEnCarrito = items.filter((i: { itemType: string }) => i.itemType === "producto");
+    for (const item of productosEnCarrito) {
+      const { getProductoById } = await import("@/lib/products");
+      const producto = getProductoById(item.itemId);
+      if (!producto) {
+        return NextResponse.json(
+          { error: `Producto "${item.nombreItem}" no encontrado` },
+          { status: 400 }
+        );
+      }
+      if (producto.stock < item.cantidad) {
+        return NextResponse.json(
+          { error: `No hay suficiente stock de "${item.nombreItem}". Disponible: ${producto.stock}` },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Descontar stock de productos
+    for (const item of productosEnCarrito) {
+      descontarStock(item.itemId, item.cantidad);
     }
 
     const encargo = createEncargo({

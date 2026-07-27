@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getEncargoById, updateEncargoEstado, updateEncargoNotas } from "@/lib/orders";
+import { getEncargoById, updateEncargoEstado, updateEncargoNotas, cancelarEncargo } from "@/lib/orders";
 import { isAuthenticated } from "@/lib/auth";
 
 export async function GET(
@@ -65,6 +65,42 @@ export async function PUT(
   } catch {
     return NextResponse.json(
       { error: "Error al actualizar encargo" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const auth = await isAuthenticated();
+    if (!auth) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+
+    const { id } = await params;
+    const body = await request.json();
+
+    if (body.cancelar) {
+      const encargo = cancelarEncargo(id);
+      if (!encargo) {
+        return NextResponse.json(
+          { error: "Encargo no encontrado" },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json({ data: encargo });
+    }
+
+    return NextResponse.json(
+      { error: "Acción no válida" },
+      { status: 400 }
+    );
+  } catch {
+    return NextResponse.json(
+      { error: "Error al cancelar encargo" },
       { status: 500 }
     );
   }

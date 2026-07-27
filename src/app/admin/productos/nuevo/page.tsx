@@ -20,6 +20,7 @@ export default function NuevoProductoPage() {
   const [precio, setPrecio] = useState("");
   const [categoria, setCategoria] = useState<string>(CATEGORIAS_PRODUCTOS[0].id);
   const [imagenUrl, setImagenUrl] = useState("");
+  const [stock, setStock] = useState("0");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +46,7 @@ export default function NuevoProductoPage() {
           precio: parseFloat(precio),
           categoria,
           imagenUrl: imagenUrl || undefined,
+          stock: parseInt(stock) || 0,
         }),
       });
 
@@ -124,6 +126,15 @@ export default function NuevoProductoPage() {
             }))}
           />
         </div>
+
+        <Input
+          label="Stock disponible"
+          type="number"
+          min="0"
+          placeholder="0"
+          value={stock}
+          onChange={setStock}
+        />
 
         <div className="flex flex-col-reverse md:flex-row gap-3 pt-4">
           <Link

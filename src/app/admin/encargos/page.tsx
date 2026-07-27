@@ -85,14 +85,18 @@ export default async function AdminEncargosPage({
                 </div>
                 <Badge
                   variant={
-                    encargo.estado === "pendiente"
+                    encargo.cancelado
+                      ? "cancelado"
+                      : encargo.estado === "pendiente"
                       ? "pendiente"
                       : encargo.estado === "en_proceso"
                       ? "en_proceso"
                       : "completado"
                   }
                 >
-                  {encargo.estado === "pendiente"
+                  {encargo.cancelado
+                    ? "Cancelado"
+                    : encargo.estado === "pendiente"
                     ? "Pendiente"
                     : encargo.estado === "en_proceso"
                     ? "En proceso"
@@ -112,6 +116,7 @@ export default async function AdminEncargosPage({
                 <EncargosActions
                   id={encargo.id}
                   estado={encargo.estado}
+                  cancelado={encargo.cancelado}
                 />
                 <Link
                   href={`/admin/encargos/${encargo.id}`}

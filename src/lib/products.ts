@@ -9,6 +9,7 @@ export interface CreateProductoInput {
   precio: number;
   categoria: CategoriaProducto;
   imagenUrl?: string;
+  stock?: number;
 }
 
 export interface UpdateProductoInput {
@@ -18,6 +19,7 @@ export interface UpdateProductoInput {
   categoria?: CategoriaProducto;
   imagenUrl?: string;
   activo?: boolean;
+  stock?: number;
 }
 
 export function getAllProductos(incluirInactivos = false) {
@@ -61,6 +63,7 @@ export function createProducto(input: CreateProductoInput) {
       categoria: input.categoria,
       imagenUrl: input.imagenUrl || null,
       activo: true,
+      stock: input.stock ?? 0,
       createdAt: now,
       updatedAt: now,
     })
@@ -77,6 +80,7 @@ export function updateProducto(id: string, input: UpdateProductoInput) {
   if (input.categoria !== undefined) updates.categoria = input.categoria;
   if (input.imagenUrl !== undefined) updates.imagenUrl = input.imagenUrl;
   if (input.activo !== undefined) updates.activo = input.activo;
+  if (input.stock !== undefined) updates.stock = input.stock;
 
   db.update(schema.productos)
     .set(updates)
@@ -95,4 +99,26 @@ export function unarchiveProducto(id: string) {
 
 export function deleteProducto(id: string) {
   db.delete(schema.productos).where(eq(schema.productos.id, id)).run();
+}
+
+export function descontarStock(productoId: string, cantidad: number): boolean {
+  const producto = getProductoById(productoId);
+  if (!producto) return false;
+  if (producto.stock < cantidad) return false;
+
+  db.update(schema.productos)
+    .set({ stock: producto.stock - cantidad, updatedAt: new Date().toISOString() })
+    .where(eq(schema.productos.id, productoId))
+    .run();
+  return true;
+}
+
+export function devolverStock(productoId: string, cantidad: number): void {
+  const producto = getProductoById(productoId);
+  if (!producto) return;
+
+  db.update(schema.productos)
+    .set({ stock: producto.stock + cantidad, updatedAt: new Date().toISOString() })
+    .where(eq(schema.productos.id, productoId))
+    .run();
 }

@@ -8,6 +8,7 @@ export const productos = sqliteTable("productos", {
   categoria: text("categoria").notNull(),
   imagenUrl: text("imagen_url"),
   activo: integer("activo", { mode: "boolean" }).notNull().default(true),
+  stock: integer("stock").notNull().default(0),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
@@ -31,6 +32,7 @@ export const encargos = sqliteTable(
     clienteNombre: text("cliente_nombre").notNull(),
     fechaEncargo: text("fecha_encargo").notNull(),
     estado: text("estado").notNull().default("pendiente"),
+    cancelado: integer("cancelado", { mode: "boolean" }).notNull().default(false),
     total: real("total").notNull().default(0),
     notas: text("notas").default(""),
     createdAt: text("created_at").notNull(),
