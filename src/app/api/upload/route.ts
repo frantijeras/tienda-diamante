@@ -39,13 +39,18 @@ export async function POST(request: NextRequest) {
       .toBuffer();
 
     const filename = `${uuidv4()}.jpg`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "productos");
 
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    // Guardar en la carpeta public del proyecto (desarrollo)
+    const devDir = path.join(process.cwd(), "public", "uploads", "productos");
+    if (!fs.existsSync(devDir)) fs.mkdirSync(devDir, { recursive: true });
+    fs.writeFileSync(path.join(devDir, filename), optimized);
+
+    // También guardar en .next/standalone/public (producción standalone)
+    const standaloneDir = path.join(process.cwd(), ".next", "standalone", "public", "uploads", "productos");
+    if (fs.existsSync(path.join(process.cwd(), ".next", "standalone"))) {
+      if (!fs.existsSync(standaloneDir)) fs.mkdirSync(standaloneDir, { recursive: true });
+      fs.writeFileSync(path.join(standaloneDir, filename), optimized);
     }
-
-    fs.writeFileSync(path.join(uploadDir, filename), optimized);
 
     return NextResponse.json(
       { url: `/uploads/productos/${filename}` },
