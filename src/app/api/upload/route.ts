@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     if (file.size > UPLOAD_MAX_SIZE) {
       return NextResponse.json(
-        { error: "Archivo demasiado grande (máx 5MB)" },
+        { error: `Archivo demasiado grande (máx 15MB). Tu foto pesa ${(file.size / 1024 / 1024).toFixed(1)}MB` },
         { status: 413 }
       );
     }
@@ -51,9 +51,10 @@ export async function POST(request: NextRequest) {
       { url: `/uploads/productos/${filename}` },
       { status: 201 }
     );
-  } catch {
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Error desconocido";
     return NextResponse.json(
-      { error: "Error al subir archivo" },
+      { error: `Error al procesar imagen: ${message}` },
       { status: 500 }
     );
   }

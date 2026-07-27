@@ -42,6 +42,6 @@ export const CART_TTL_DAYS = 7;
 export const SESSION_COOKIE_NAME = "admin_session";
 export const SESSION_DURATION_MS = 24 * 60 * 60 * 1000;
 
-export const UPLOAD_MAX_SIZE = 5 * 1024 * 1024; // 5MB
+export const UPLOAD_MAX_SIZE = 15 * 1024 * 1024; // 15MB
 export const UPLOAD_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 export const UPLOAD_DIR = "public/uploads/productos";
