@@ -61,15 +61,26 @@ export default async function ProductoDetallePage({
           <p className="text-body-lg text-gray-600 mb-6">
             {producto.descripcion}
           </p>
-          <p className="text-h3 font-display font-semibold text-lila-700 mb-8">
+          <p className="text-h3 font-display font-semibold text-lila-700 mb-6">
             {formatCurrency(producto.precio)}
           </p>
+
+          {producto.stock !== undefined && (
+            <p className={`text-body-sm font-semibold mb-6 ${producto.stock === 0 ? "text-danger-500" : producto.stock <= 5 ? "text-warning-500" : "text-success-600"}`}>
+              {producto.stock === 0
+                ? "❌ Agotado"
+                : producto.stock <= 5
+                ? `⚠️ Quedan ${producto.stock} unidades`
+                : "✅ En stock"}
+            </p>
+          )}
 
           <AddToCartButton
             itemId={producto.id}
             nombreItem={producto.nombre}
             precioUnitario={producto.precio}
             itemType="producto"
+            stock={producto.stock}
           />
         </div>
       </div>

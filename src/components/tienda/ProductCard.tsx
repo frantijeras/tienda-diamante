@@ -10,6 +10,7 @@ interface ProductCardProps {
   precio: number;
   imagenUrl: string | null;
   basePath: string;
+  stock?: number;
 }
 
 export function ProductCard({
@@ -19,6 +20,7 @@ export function ProductCard({
   precio,
   imagenUrl,
   basePath,
+  stock,
 }: ProductCardProps) {
   return (
     <Link
@@ -45,9 +47,16 @@ export function ProductCard({
           <span className="text-h3 font-display font-semibold text-lila-700">
             {formatCurrency(precio)}
           </span>
-          <span className="inline-flex items-center justify-center w-10 h-10 bg-lila-500 text-white rounded-full group-hover:bg-lila-600 transition-colors">
-            <Plus className="size-5" />
-          </span>
+          <div className="flex flex-col items-end gap-1">
+            {stock !== undefined && stock <= 5 && (
+              <span className={`text-body-xs font-semibold ${stock === 0 ? "text-danger-500" : "text-warning-500"}`}>
+                {stock === 0 ? "❌ Agotado" : `⚠️ Quedan ${stock}`}
+              </span>
+            )}
+            <span className="inline-flex items-center justify-center w-10 h-10 bg-lila-500 text-white rounded-full group-hover:bg-lila-600 transition-colors">
+              <Plus className="size-5" />
+            </span>
+          </div>
         </div>
       </div>
     </Link>

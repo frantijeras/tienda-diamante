@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { createSession } from "@/lib/auth";
+import fs from "fs";
+import path from "path";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +16,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const hash = process.env.ADMIN_PASSWORD_HASH!;
+    let hash = process.env.ADMIN_PASSWORD_HASH || "";
+    if (!hash) {
+      const configFile = path.join(process.cwd(), "config.production.json");
+      if (fs.existsSync(configFile)) {
+        const cfg = JSON.parse(fs.readFileSync(configFile, "utf-8"));
+        hash = cfg.ADMIN_PASSWORD_HASH || "";
+      }
+    }
+
     const valid = await bcrypt.compare(password, hash);
 
     if (!valid) {

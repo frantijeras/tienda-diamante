@@ -33,29 +33,27 @@ interface Encargo {
 export default function EncargoDetallePage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
+  const encargoId = params.id;
+
   const [encargo, setEncargo] = useState<Encargo | null>(null);
   const [loading, setLoading] = useState(true);
   const [notas, setNotas] = useState("");
   const [savingNotas, setSavingNotas] = useState(false);
   const [cancelling, setCancelling] = useState(false);
-  const [encargoId, setEncargoId] = useState("");
 
   useEffect(() => {
-    params.then(({ id }) => {
-      setEncargoId(id);
-      fetch(`/api/encargos/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.data) {
-            setEncargo(data.data);
-            setNotas(data.data.notas || "");
-          }
-        })
-        .finally(() => setLoading(false));
-    });
-  }, [params]);
+    fetch(`/api/encargos/${encargoId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.data) {
+          setEncargo(data.data);
+          setNotas(data.data.notas || "");
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [encargoId]);
 
   const handleEstadoChange = async (newEstado: string) => {
     await fetch(`/api/encargos/${encargoId}`, {

@@ -61,6 +61,7 @@ export default async function ProductosPage({
               descripcion={p.descripcion}
               precio={p.precio}
               imagenUrl={p.imagenUrl}
+              stock={p.stock}
               basePath="/productos"
             />
           ))}
